@@ -1,29 +1,8 @@
-/*
-// Pino analógico onde o LDR está conectado
-int sensorLuz = A0;
-
-void setup() {
-  // Inicializa comunicação serial
-  Serial.begin(9600);
-}
-
-void loop() {
-  // Lê o valor do sensor (0 a 1023)
-  int valorLuz = analogRead(sensorLuz);
-
-  // Imprime no terminal
-  Serial.print("Luminosidade: ");
-  Serial.println(valorLuz);
-
-  // Pequeno atraso para não sobrecarregar o monitor
-  delay(500);
-}
-*/
-
 const int sensorLuz = A0;   // Pino analógico do LDR
 const int led = 9;          // Pino digital do LED
 const int button = 2;     // button pin
 int buttonState = 0;
+int lightValue = 0;
 
 
 void setup() {
@@ -33,8 +12,17 @@ void setup() {
 }
 
 void loop() {
+  lightValue = analogRead(sensorLuz);
+
   Serial.print("Luminosidade: ");
-  Serial.println(analogRead(sensorLuz));
+  Serial.print(lightValue);
+
+  if (lightValue > 500) {
+    Serial.println(" - Água turva!");
+  }
+  else {
+    Serial.println(" - Água clara");
+  }
 
   // turn off the LED by pressing the button
   if (buttonState == LOW) {
@@ -44,5 +32,6 @@ void loop() {
     digitalWrite(led, HIGH);   // LED apagado
   }
 
+  // Small delay so as not to overload the monitor
   delay(1500);
 }
